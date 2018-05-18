@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.emprestimo.modelo.Emprestimo;
+import br.emprestimo.modelo.EmprestimoDao;
 import br.emprestimo.modelo.Livro;
 import br.emprestimo.modelo.Usuario;
 import br.emprestimo.servico.ServicoEmprestimo;
@@ -24,7 +25,6 @@ public class UC01RegistraEmprestimoDeLivro {
 	public static void setUpBeforeClass() throws Exception {
 		//cenario
 		livro = ObtemLivro.comDadosValidos();
-		
 		usuario = new Usuario();
 		usuario.setRa("11111");
 		usuario.setNome("Jose da Silva");
@@ -90,6 +90,33 @@ public class UC01RegistraEmprestimoDeLivro {
 		String dataEmprestimo = emprestimo.setDataEmprestimo();
 		assertTrue(dataAtual.equals(dataEmprestimo));
 	}
-	
+	@Test 
+	public void CT09QuandoInserirUmRegistroRetornaTrue(){
+		//cenario
+		Emprestimo umEmprestimo= new Emprestimo();
+		Usuario user = ObtemUsuario.comDadosValidos();
+		Livro livro = ObtemLivro.comDadosValidos();
+		ServicoEmprestimo servico= new ServicoEmprestimo();
+		umEmprestimo=servico.empresta(livro, user);
+		EmprestimoDao emprestimoDao = new EmprestimoDao();
+		//acao
+		boolean result =emprestimoDao.adiciona(umEmprestimo);
+		//verificacao
+		assertTrue(result);
+	}
+	@Test
+	public void CT10ConsultaRegistroEmprestimoComSucesso(){
+		//cenario
+		Emprestimo umEmprestimo= new Emprestimo();
+		Usuario user = ObtemUsuario.comDadosValidos();
+		Livro livro = ObtemLivro.comDadosValidos();
+		ServicoEmprestimo servico= new ServicoEmprestimo();
+		umEmprestimo=servico.empresta(livro, user);
+		EmprestimoDao emprestimoDao = new EmprestimoDao();
+		//acao
+		Emprestimo result =emprestimoDao.consultar(umEmprestimo);
+		//verificao
+		assertTrue(result.equals(emprestimoDao));
+	}
 	
 }
